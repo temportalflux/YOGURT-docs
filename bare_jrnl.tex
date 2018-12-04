@@ -1,13 +1,6 @@
 %% bare_jrnl.tex
-%% V1.4b
-%% 2015/08/26
-%% by Michael Shell
-%% see http://www.michaelshell.org/
-%% for current contact information.
-%%
-%% This is a skeleton file demonstrating the use of IEEEtran.cls
-%% (requires IEEEtran.cls version 1.8b or later) with an IEEE
-%% journal paper.
+%% 2018/12/04
+%% by Dustin Yost
 %%
 %% Support sites:
 %% http://www.michaelshell.org/tex/ieeetran/
@@ -16,48 +9,12 @@
 %% http://www.ieee.org/
 
 %%*************************************************************************
-%% Legal Notice:
-%% This code is offered as-is without any warranty either expressed or
-%% implied; without even the implied warranty of MERCHANTABILITY or
-%% FITNESS FOR A PARTICULAR PURPOSE! 
-%% User assumes all risk.
-%% In no event shall the IEEE or any contributor to this code be liable for
-%% any damages or losses, including, but not limited to, incidental,
-%% consequential, or any other damages, resulting from the use or misuse
-%% of any information contained here.
-%%
-%% All comments are the opinions of their respective authors and are not
-%% necessarily endorsed by the IEEE.
-%%
-%% This work is distributed under the LaTeX Project Public License (LPPL)
-%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
-%% distributed and modified. A copy of the LPPL, version 1.3, is included
-%% in the base LaTeX documentation of all distributions of LaTeX released
-%% 2003/12/01 or later.
-%% Retain all contribution notices and credits.
-%% ** Modified files should be clearly indicated as such, including  **
-%% ** renaming them and changing author support contact information. **
-%%*************************************************************************
-
-
-% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
-% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
-% *** with production work. The IEEE's font choices and paper sizes can   ***
-% *** trigger bugs that do not appear when using other class files.       ***                          ***
-% The testflow support page is at:
-% http://www.michaelshell.org/tex/testflow/
-
-
 
 \documentclass[journal]{IEEEtran}
 %
 % If IEEEtran.cls has not been installed into the LaTeX system files,
 % manually specify the path to it like:
 % \documentclass[journal]{../sty/IEEEtran}
-
-
-
-
 
 % Some very useful LaTeX packages include:
 % (uncomment the ones you want to load)
@@ -82,13 +39,9 @@
 % have to be run twice to clear warning/error messages.
 
 
-
-
-
-
 % *** CITATION PACKAGES ***
 %
-%\usepackage{cite}
+\usepackage{cite}
 % cite.sty was written by Donald Arseneau
 % V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
 % \cite{} output to follow that of the IEEE. Loading the cite package will
@@ -103,10 +56,6 @@
 % The latest version can be obtained at:
 % http://www.ctan.org/pkg/cite
 % The documentation is contained in the cite.sty file itself.
-
-
-
-
 
 
 % *** GRAPHICS RELATED PACKAGES ***
@@ -150,9 +99,6 @@
 % http://www.tug.org/applications/pdftex
 
 
-
-
-
 % *** MATH PACKAGES ***
 %
 %\usepackage{amsmath}
@@ -166,9 +112,6 @@
 % does. amsmath.sty is already installed on most LaTeX systems. The latest
 % version and documentation can be obtained at:
 % http://www.ctan.org/pkg/amsmath
-
-
-
 
 
 % *** SPECIALIZED LIST PACKAGES ***
@@ -189,8 +132,6 @@
 % http://www.ctan.org/pkg/algorithmicx
 
 
-
-
 % *** ALIGNMENT PACKAGES ***
 %
 %\usepackage{array}
@@ -208,8 +149,6 @@
 % IEEEtran contains the IEEEeqnarray family of commands that can be used to
 % generate multiline equations as well as matrices, tables, etc., of high
 % quality.
-
-
 
 
 % *** SUBFIGURE PACKAGES ***
@@ -234,8 +173,6 @@
 %
 % The latest version and documentation of subfig.sty can be obtained at:
 % http://www.ctan.org/pkg/subfig
-
-
 
 
 % *** FLOAT PACKAGES ***
@@ -283,8 +220,6 @@
 % http://www.ctan.org/pkg/dblfloatfix
 
 
-
-
 %\ifCLASSOPTIONcaptionsoff
 %  \usepackage[nomarkers]{endfloat}
 % \let\MYoriglatexcaption\caption
@@ -324,8 +259,6 @@
 % page by themselves.
 
 
-
-
 % *** PDF, URL AND HYPERLINK PACKAGES ***
 %
 %\usepackage{url}
@@ -336,28 +269,25 @@
 % Basically, \url{my_url_here}.
 
 
-
-
 % *** Do not adjust lengths that control margins, column widths, etc. ***
 % *** Do not use packages that alter fonts (such as pslatex).         ***
 % There should be no need to do such things with IEEEtran.cls V1.6 and later.
 % (Unless specifically asked to do so by the journal or conference you plan
 % to submit to, of course. )
 
-
 % correct bad hyphenation here
 \hyphenation{op-tical net-works semi-conduc-tor}
+
+
 
 
 \begin{document}
 %
 % paper title
-% Titles are generally capitalized except for words such as a, an, and, as,
-% at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
-% not capitalized unless they are the first or last word of the title.
+% Titles are generally capitalized except for words such as a, an, and, as, at, but, by, for, in, nor, of, on, or, the, to and up, which are usually not capitalized unless they are the first or last word of the title.
 % Linebreaks \\ can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
-\title{Bare Demo of IEEEtran.cls\\ for IEEE Journals}
+\title{Finding the User Experience Using YOGURT}
 %
 %
 % author names and IEEE memberships
@@ -369,14 +299,13 @@
 % was not built to handle multiple paragraphs
 %
 
-\author{Michael~Shell,~\IEEEmembership{Member,~IEEE,}
-        John~Doe,~\IEEEmembership{Fellow,~OSA,}
-        and~Jane~Doe,~\IEEEmembership{Life~Fellow,~IEEE}% <-this % stops a space
-\thanks{M. Shell was with the Department
-of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
-GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this % stops a space
-\thanks{J. Doe and J. Doe are with Anonymous University.}% <-this % stops a space
-\thanks{Manuscript received April 19, 2005; revised August 26, 2015.}}
+% TODO: What is my title?
+% TODO: Remove M.Shell thanks
+% TODO: Thanks myself?
+\author{
+    Dustin~Yost,~\IEEEmembership{Game Engineer,~Champlain College,}
+    \thanks{M. Shell was with the Department of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta, GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}
+}
 
 % note the % following the last \IEEEmembership and also \thanks - 
 % these prevent an unwanted space from occurring between the last author name
@@ -399,8 +328,9 @@ GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this %
 
 
 % The paper headers
+% TODO: Update markboth
 \markboth{Journal of \LaTeX\ Class Files,~Vol.~14, No.~8, August~2015}%
-{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for IEEE Journals}
+{Yost \MakeLowercase{\textit{et al.}}: Finding the User Experience Using YOGURT}
 % The only time the second header will appear is for the odd numbered pages
 % after the title page when using the twoside option.
 % 
@@ -408,7 +338,6 @@ GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this %
 % *** name in the headers of peer review papers.                   ***
 % You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
 % you desire.
-
 
 
 
@@ -432,19 +361,51 @@ GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this %
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-The participant will produce a full conference paper or extended abstract based on the GUR topicof  their  choice  and  the  tool  developed  to  explore  this  topic  (above),ora  complete  field  surveypaper publishable in a journal.  The paper should include background research (made easier withan  annotated  bibliography),  a  problem  statement,  the  main  contribution  (the  tool)  and  how  ithelps solve the problems, findings and conclusions.  The paper should follow an academic standardformat (ACM, IEEE) and should be “conference-ready”; the participant should be confident in thework and strive to submit the work to a GUR or HCI related conference.  Due at the start of week15 (exam week).
+The paper should include background research (made easier with an annotated bibliography), a problem statement, the main contribution (the tool) and how it helps solve the problems, findings and conclusions.
 
-The abstract goes here.
+Process
+- September to December 2018
+- Researched and learned about the GUR field
+    - what is the field about
+    - what other tools are out there
+    - how would I go about making a tool for GUR
+- Proposed a tool
+- Made a prototype/proof of concept
+- Tested prototype against games and players
+- Iterated
+
+What was the problem?
+- How to get data representing user experience from gameplay right into the engine where developers can easily understand it
+
+Tool
+- Unreal Engine 4 plugin
+- Collects data during gameplay (Editor and standalone)
+- Load in binary file(s) into engine
+- Render in engine
+- Heatmaps only
+- Can view chunks of data, not just whole gameplay
+
+Findings
+- Unreal plugins are hard
+- Starting early is imperitive to iteration
+- Stay close to the dev team
+- Actaully work with the team to figure out what is the most useful
+- Tool should be customized to the game, but the core should be abstract enough to fit any game
+
+Conclusion
+- ?
+- Post prototype Goals
+    - Can be customized per project (collection and render)
+    - Data can be played back at some speed (x1 speed for actual recorded timeframe)
+    - More than just heatmaps
+    - Event nodes to see actions in the world
+
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
 IEEE, IEEEtran, journal, \LaTeX, paper, template.
 \end{IEEEkeywords}
-
-
-
-
 
 
 % For peer review papers, you can put extra information on the cover
