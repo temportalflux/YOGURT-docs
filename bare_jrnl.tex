@@ -357,12 +357,12 @@
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-Over the course of my fall semester in my last year of undergraduate studies, I researched the field of Games User Research. It is also during this time that I conceptualized, proposed, built, tested, and iterated upon a tool to aid developers in the process of collecting analytical data representing the player experience. This tool then also processed said data, and visually represented it in a game engine so that it was easily digestible by developers. My main inspiration for this journey was helping teams in capstone better understand what their testers do in the world the developers have created, and how can we use that understand to better the player experience. The process of making and iterating on the tool took the semester, and I learned about the impact programmers have on the GUR field.
+This paper introduces YOGURT, a game engine plugin developed in the field of Games User Research. YOGURT was conceptualized, proposed, built, tested, and iterated upon over the course of 4 months. It's purpose is to aid developers in the process of collecting analytical data representing the player experience. YOGURT is also used to then processed said data, and visually represented it in a game engine so that it is easily digestible by developers. The inspiration to develop YOGURT came from a help in the development pipeline, there are few published and easy to access tools which help developers better understand the user experience.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-GUR, Games User Research, Unreal Engine 4, Tool, YOGURT, Champlain College.
+GUR, games user research, unreal engine, tool development.
 \end{IEEEkeywords}
 
 
@@ -394,38 +394,37 @@ GUR, Games User Research, Unreal Engine 4, Tool, YOGURT, Champlain College.
 % 
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
-\IEEEPARstart{Y}{our} Own Games User Research Toolset (YOGURT) is a tool developed by an engineer for the purpose of collecting player experience data, processing it, and visualizing said data in engine. Over the course of September-December 2018, I developed a tool for the field of Games User Research to help game developers understand the experiences their players have in their game. This article will touch on the research I did to better understand the Games User Research field. It will also go through my journey of creating a tool in Unreal Engine 4, and the things I learned along the way. The most important thing to take away from this journey though, is how programmers can support developers in the effort to better understand the player experience. Why should programmers be involved in this process?
+\IEEEPARstart{Y}{our} Own Games User Research Toolset (YOGURT) is a tool developed for the purpose of collecting player experience data, processing it, and visualizing said data in engine. At its core, it's goal is to help game developers better understand the experiences their players have in their game. This article will touch on research of Games User Research field. It will also step through the creation of tool development in Unreal Engine 4, and various takeaways through the development of YOGURT. The most important thing to take away from this journey though, is how programmers can support developers in the effort to better understand the player experience. Why should programmers be involved in this process?
 
 \hfill dty
  
 \hfill December 06, 2018
 
-\section{Background/Related Works}
+\section{Related Works}
 
-The field of Games User Research (otherwise known as GUR) isn’t exactly a new field in game development. In fact, its been around a while. GUR is the practice of analyzing user experience (UX) for the purpose of improving that same experience. That said, it has only been formally recognized as a discipline within the games industry in the last decade \cite{mirza-ch2}. For some studios, user experience research may tend to fall under the umbrella category of quality assurance (QA) testing, as it’s more convenient to test the game for bugs and experience all at once. There is a clear distinction in intent when it comes to QA vs GUR testing. Per definition, Quality Assurance testing is meant to test the quality of a game - to find bugs so that these bugs can be fixed so that the game is more stable. The purpose of Games User Research testing, however, is to collecting, analyzing, and act upon on data pertaining to the user’s experience of a game for the purpose of improving said experience. In short, QA is the practice of making a game bug free, whereas GUR must assume a game is stable and looks at how to give players the most enjoyable experience.
-Games User Research can come in many forms. There are some companies like Player Research who have departments solely dedicated to GUR testing and analysis, and have even looked at best ways to set up a GUR lab \cite{mirza-ch6}. Many studios use surveys as one way to gather knowledge on the player experience \cite{mirza-ch9}. Surveys are by far the easiest to set up, but have pitfalls due to the reliance on player memory and transparency. There many are other ways to observe the player experience; recording video of players as they play the game, keeping track of player comments, the Think Aloud protocol, using other inputs like the Hopson Boxes, or utilizing biometrics. \cite{mirza-ch11} \cite{mirza-ch12} \cite{mirza-ch16} All that said thought, one of the most useful forms of data collection involves analytics/telemetry, and requires minimal or no effort on the part of the player. \cite{mirza-ch19} Analytics provide a concrete way for developers to see what players are doing in their game, or what is happening to them, so that as developers, they can make more informed decisions. At its core, this means gathering data, analysis, visualization, reporting, and taking action. \cite{mirza-ch19}
+The field of Games User Research (otherwise known as GUR) isn’t exactly a new field in game development. In fact, its been around a while. GUR is the practice of analyzing user experience (UX) for the purpose of improving that same experience. That said, it has only been formally recognized as a discipline within the games industry in the last decade \cite{gur-ch2}. For some studios, user experience research may tend to fall under the umbrella category of quality assurance (QA) testing, as it’s more convenient to test the game for bugs and experience all at once. There is a clear distinction in intent when it comes to QA vs GUR testing. Per definition, Quality Assurance testing is meant to test the quality of a game - to find bugs so that these bugs can be fixed so that the game is more stable. The purpose of Games User Research testing, however, is to collecting, analyzing, and act upon on data pertaining to the user’s experience of a game for the purpose of improving said experience. In short, QA is the practice of making a game bug free, whereas GUR must assume a game is stable and looks at how to give players the most enjoyable experience.
+Games User Research can come in many forms. There are some companies like Player Research who have departments solely dedicated to GUR testing and analysis, and have even looked at best ways to set up a GUR lab \cite{gur-ch6}. Many studios use surveys as one way to gather knowledge on the player experience \cite{gur-ch9}. Surveys are by far the easiest to set up, but have pitfalls due to the reliance on player memory and transparency. There many are other ways to observe the player experience; recording video of players as they play the game, keeping track of player comments, the Think Aloud protocol, using other inputs like the Hopson Boxes, or utilizing biometrics. \cite{gur-ch11} \cite{gur-ch12} \cite{gur-ch16} All that said thought, one of the most useful forms of data collection involves analytics/telemetry, and requires minimal or no effort on the part of the player. \cite{gur-ch19} Analytics provide a concrete way for developers to see what players are doing in their game, or what is happening to them, so that as developers, they can make more informed decisions. At its core, this means gathering data, analysis, visualization, reporting, and taking action. \cite{gur-ch19}
 Individual companies and engine developers alike have already started integrating analytics into their games and platforms. Unity presented a talk during Unite 2015 which showed off their 3-dimensional heatmapping in engine \cite{unite2015}, not to mention Unity has a whole section of their pipeline dedicated to tracking game analytics. There are individual developers out there who have made analytical tools before, such as Prometheus (a 2D heatmapping tool) \cite{gibbs}. There are also a number of companies which provide game developers with ways to track analytics outside of specific engines. \cite{simpleusability} \cite{drachen} The field of Telemetry/Analytics and Biometrics is not without its case studies and research. A case study by A.Drachen looked at the player experience in platformers, focusing on comparing the difficulty of tasks with the errors made in each task. \cite{wehbe} A paper on the theoretical mathematics behind how to create heatmaps by binning data with respect to the data vs the time it was recorded. \cite{kumatani} Tool suites and studies which explore the best way to interpret player emotional state, using technology such as webcams and bpm. \cite{dingli} A case study explored the best way to evaluate user interfaces using different evaluation methods. \cite{nielsen} In an article about Gameplay Approachability Principles, Heather Desurvire and Charlotte Wiberg compared GAP with usability testing and focuses on finding the best heuristics to evaluate player experience. \cite{desurvire} In a paper on gameplay flow and immersion, Lennart Nacke and Craig A. Lindley explore commonly used, yet vague terms to describe the player experience and how their definitions affect player research. \cite{nacke}
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
 
-\section{Making Yogurt}
+\section{YOGURT}
 
-\subsection{Process}
+The purpose of this study was to explore the GUR discipline, looking at problems and challenges as a programmer. As such, after gathering a fundamental understanding of the field, the next goal was to craft a proposal for a tool which would enter development. This tool eventually became known as Your Own Games User Research Toolset (YOGURT). YOGURT is a Unreal Engine 4 plugin which provides a framework for recording data during gameplay and loading it into the editor at a later point. At its inception, YOGURT was planned to have native support for heat-maps, as they are a frequently used tool for tracking anything from player movement to death rates to actions in the world to player emotional input (lookup Hopson Boxes). YOGURT was also planned to provide native support for a set of features called Timelines. This feature set would allow developers to bin/chunk data according to when they occurred during gameplay so that developers could view specific chunks of gameplay. It would also allow developers to “playback” data from a starting time to an ending time, seeing what players are doing in the environment over the course of gameplay.
+Getting an Unreal Engine plugin up and running took a good chunk of time out of the couple of weeks set aside for prototyping. With lots of hard work, and a fair bit of luck, YOGURT took form with basic functionality. It allowed developers to specify what areas to track player position heat-mapping, save that data during the game, and enabled developers to load it into engine to see the heat-map in the 3-dimensional space. Timlines also got partially implemented; data could be binned according to the time span that developers wanted to view.
+YOGURT was built alongside a game in active development called Capital Vice. As such, YOGURT was influenced by communication with the development team to determine what kind of GUR tool would be most useful. During planning, this resulted in the goal to use a heat-map to track player position throughout gameplay. Capital Vice was a multi-player networked game, with a playtime of approximately 15 minutes. Once Yogurt was stable enough to start recording data, it was able to gather player telemetry from each play session. Data from these sessions was then used not only relay reports back to the team but fine tune how YOGURT worked and its underlying systems. It is valuable to note that the studio in which YOGURT was developed had no GUR lab. Instead, data was gathered in the QA lab, which functioned as a hybrid for the purpose of finding bugs and getting player feedback on games. This meant that data gathered during testing was not always valuable, and could have be tainted by bugs.
+After Yogurt was stable and was able to start gathering data, various bugs were found in how the system processed and rendered data. Over the course of the remaining weeks, YOGURT was iterated upon, bugs patched, and visualization improved.
 
-The first couple weeks of my study I explored and learned about the field of Games User Research, mainly from the Games User Research book \cite{mirza}. I also looked for other projects which explained their process in creating GUR tools. Having never created a tool for user data collection, I had no frame of reference for how difficult the journey would be or what kinds of data is useful.
-The purpose of this study is to explore the GUR discipline through the lense of a programmer. As such, after gathering a fundamental understanding of the field, my next goal was to craft a proposal for a tool which I would later develop. This tool eventually became known as Your Own Games User Research Toolset (YOGURT or Yogurt). Yogurt is a Unreal Engine 4 plugin which provides a framework for recording data during gameplay and loading it into the editor at a later point. At its inception, Yogurt was planned to have native support for heatmaps, as they are a frequently used tool for tracking anything from player movement to death rates to actions in the world to player emotional input (lookup Hopson Boxes). Yogurt was also planned to provide native support for a feature called Timelines. This feature set would allow developers to bin/chunk data according to when they occured during gameplay so that developers could view specific chunks of gameplay. It would also allow developers to “playback” data from a starting time to an ending time, seeing what players are doing in the environment over the course of gameplay.
-As a programmer new to Unreal Engine plugins, getting a working framework up and running to a chunk of time out of the couple weeks I had to prototype. With lots of hard work, and a fair bit of luck, I was able to get Yogurt up and running with basic functionality. It allowed developers to specify what areas to track player position heatmapping, saved that data during the game, and enabled developers to load it into engine to see the heatmap on the world surface in the 3-dimensional space. I also got in part of Timelines, which was the binning of data according to the time span that developers wanted to view.
-Yogurt was built alongside a Champlain Game Studio Capstone game called Capital Vice. This allowed me to work with the developer team to determine what kind of GUR tool would be most useful. During planning, this resulted in the plan to use a heatmap to track player position throughout gameplay. Capital Vice was a multiplayer networked game, with a playtime of approximately 15 minutes. Once Yogurt was stable enough to start recording data, I was able to gather player telemetry from each play session and use this data to not only relay reports back to the team but fine tune my tool as well. It should be noted that, at Champlain, there is no dedicated GUR lab yet. Instead, data was gathered in our QA lab, which functions as a hybrid for the purpose of finding bugs and getting player feedback on games. This meant that data gathered during testing was not always valuable, and could be tainted by bugs.
-After Yogurt was stable and was able to start gathering data, I found that there were some bugs with how the system processed and rendered data. Over the course of the remaining weeks, I iterated on these bugs and changes in data flow.
+\section{Discussion}
 
-\subsection{Findings}
+Working on tools for the Games User Research discipline can be time consuming and difficult. Had this tool been developed in isolation, it would not have been as easy to iterate and find bugs. The reality was though, that YOGURT was developed in tandem with a game in the prototyping phase. As such, it allowed development to be informed by lenses of both data science and game development. This style of development also allowed for easy access to be able to internally adjust the tool as the game team needed to.
+Starting this process of iteration as early as possible was also critical to YOGURTS success. Gathering the perspectives and goals of the developer team to get a proof of concept working early can make or break a tool. Actually working with a game team allowed both teams to focus in and cater specific data modules depending on what kind of data would be useful for game iteration. Scope and feature creep exist in this realm, just like any other software or development realm. Some features of YOGURT were cut due to time constraints and bugs, like parts of timelines. As a data scientist, having control of the tool to design, create, and iterate on has been extremely useful. Data science is not the end all be all though. YOGURT would not have been as successful without the skills and insight that come from programmers in the game field.
+All that said, the most critical portion to creating any good tool comes down to scalability. When it comes to constructing a GUR tool, it is especially important to be sure that the core of what your working on is modular. Modularity can enable rapid iteration and testing when done right, or cause weeks of delays and refactoring if done wrong. At one point or another, the development team may ask for something you, as a programmer or data scientist, hadn’t thought of. So as a programmer participating and innovating in the GUR field, it is incredibly valuable to have a tool which you can easily add another module to and it still work basically the same.
 
-Throughout the semester, I learned a couple valuable lessons when it comes to making GUR tools. It is valuable to note that as a programmer in our game studio, I worked on Capital Vice as a programmer in capstone. This allowed me to see both lenses as a data scientist and as a developer on the game. It also gave me access to be able to internally adjust the tool as the team needed to. One large lesson learned is to start iteration as early as you can. Getting the perspectives of the developer team and getting a proof of concept working early can make or break a tool. Actually working with a team gives you the ability to figure out what is useful for them and cater specific data modules for that. Scope and feature creep exist in this realm, just like any other software or development realm. I ended up having to push off a couple features like timeline playback due to time constraints and bugs. As a data scientist, having control of the tool to design, create, and iterate on has been extremely useful. That said, I would not have the skills to do so if I was not first and foremost a programmer in the game field. All that said, the most critical portion to creating any good tool comes down to scalability. Especially when it comes to a GUR tool, being sure that the core of what your working on is modular enough can enable rapid iteration and testing when done right, or cause weeks of delays and refactoring if done wrong. At one point or another, the development team is going to ask for something you, as a programmer or data scientist, hadn’t thought of. So as a programmer participating and innovating in the GUR field, it is incredibly valuable to have a tool which you can easily add another module to and it still work basically the same.
+\section{Future Works}
 
-\subsection{Continued Work}
-
-Looking to the future of Your Own Games User Research Toolset, there are a number of things to fine tune and add that would make the tool more useful. Unfortunately, my code base was not always super modular. There were portions of the semester in which I crunched, and it made the code behind the tool less malleable. It would be great to expose the system more so new modules and ideas are easier to implement - but that’s a given for any project. Yogurt would be a great place for other kinds of modules like static event trackers or storyboards. There is even a place for eyetracking to see how players interact with UI in games. For the timelines portion of Yogurt, the playback option for developers to see what players are doing is going to be huge. Finally, making this all easier to access in Unreal’s SlateUI system, perhaps a new editor window, would do wonders for developer ease of access - especially for small teams and studios.
+Looking to the future of Your Own Games User Research Toolset, there are a number of things that can be fine tuned and added that would make the tool more useful. Unfortunately, the code base was not always modular. There were portions of the semester in which crunched crept in, and it made the code behind the tool less malleable. It would be great to expose the system and make it easier to work with, so that new modules and ideas are easier to implement (this is a given for any project though). YOGURT would be a great place for other kinds of modules like static event trackers or storyboards. There is even a place for eye-tracking, to see how players interact with UI in games. For the timelines portion of YOGURT, the playback option for developers to see what players are doing could be huge. Finally, making this all easier to access in Unreal’s SlateUI system, perhaps a new editor window, would do wonders for developer ease of access - especially for small teams and studios.
 
 
 % An example of a floating figure using the graphicx package.
@@ -526,7 +525,7 @@ Looking to the future of Your Own Games User Research Toolset, there are a numbe
 
 
 \section{Conclusion}
-Throughout this article, you’ve touched the surface of GUR. There are thousands of games user researchers out there, some of whom are published and have written articles or books on what GUR is and how its used. You have read through my journey into GUR, starting with my inspirations to create Yogurt, the development process and hiccups along the way, and finally the tool itself and my conclusions from development. Yogurt is just one way to approach Games User Research. It is, above all, my approach to supporting developers and data scientists in the GUR field. As programmers, it is important to remain aware of fields tangential to game development, GUR especially. We have the knowledge to be able to make great tools for other developers and data scientists alike, so let’s utilize that knowledge and make some amazing stuff.
+Throughout this article, you’ve just barely scratched the surface of GUR. There are thousands of games user researchers out there, some of whom are published and have written articles or books on what GUR is and how its used. You have read through a journey into GUR tool development, starting with the inspirations to create YOGURT, the development process and hiccups along the way, and finally the tool itself and conclusions found from development. YOGURT is just one way to approach Games User Research. It is one approach to supporting developers and data scientists in the GUR field. As programmers, it is important to remain aware of fields tangential to game development, GUR especially. Programmers have the knowledge to be able to make great tools for other developers and data scientists alike, so utilize that knowledge and make some amazing stuff.
 
 
 % if have a single appendix:
@@ -591,34 +590,48 @@ Throughout this article, you’ve touched the surface of GUR. There are thousand
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-\begin{thebibliography}{1}
+\begin{thebibliography}{17}
 
-% TODO: SORT
-% TODO: Ensure all used
-% TODO GUR book
+\bibitem{gur-ch9}
+F. Bruhlmann, E. Mekler, "Surveys in Games User Research," \emph{Games user research. 1st ed. New York, NY: Oxford University Press}, vol. ED-1, pp. 141-162, Dec. 2018.
 
-\bibitem{kumatani}
-S. Kumatani, T. Itoh, Y. Motohashi, K. Umezu and M. Takatsuka, "Time-Varying Data Visualization Using Clustered Heatmap and Dual Scatterplots," \emph{2016 20th International Conference Information Visualisation (IV)}, Lisbon, Portugal, 2016, pp. 63-68. doi:10.1109/IV.2016.50 keywords:{Data visualization;Space heating;Image color analysis;Clustering algorithms;Correlation;Process control},
-url:doi.ieeecomputersociety.org/10.1109/IV.2016.50
-
-\bibitem{wehbe}
-Rina R. Wehbe, Elisa D. Mekler, Mike Schaekermann, Edward Lank, and Lennart E. Nacke. 2017. Testing Incremental Difficulty Design in Platformer Games. In \emph{Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems (CHI '17)}. ACM, New York, NY, USA, 5109-5113. DOI: https://doi.org/10.1145/3025453.3025697
-
-\bibitem{gibbs}
-Justin Gibbs. 2018. \emph{Prometheus}: Games User Research Tool Development Using Best Practices. In \emph{Proceedings of Guildhall Thesis Defense 2018 (Guildhall’18)}. ACM, New York, NY, USA, Article X, 10 pages. https://doi.org/10.475/123\_4
+\bibitem{desurvire}
+Heather Desurvire and Charlotte Wiberg. 2008. Master of the game: assessing approachability in future game design. In \emph{CHI '08 Extended Abstracts on Human Factors in Computing Systems} (CHI EA '08). ACM, New York, NY, USA, 3177-3182. DOI: https://doi.org/10.1145/1358628.1358827
 
 \bibitem{dingli}
 A. Dingli, A. Giordimaina and H. P. Martinez, "Experience Surveillance Suite for Unity 3D," \emph{2015 7th International Conference on Games and Virtual Worlds for Serious Applications (VS-Games)(VS-GAMES)}, Skövde, Sweden, 2015, pp. 1-6.
 doi:10.1109/VS-GAMES.2015.7295774 keywords:{}, url:doi.ieeecomputersociety.org/10.1109/VS-GAMES.2015.7295774
 
-\bibitem{desurvire}
-Heather Desurvire and Charlotte Wiberg. 2008. Master of the game: assessing approachability in future game design. In \emph{CHI '08 Extended Abstracts on Human Factors in Computing Systems} (CHI EA '08). ACM, New York, NY, USA, 3177-3182. DOI: https://doi.org/10.1145/1358628.1358827
+\bibitem{gur-ch19}
+A. Drachen, S. Connor, "Game Analytics for Games User Research," \emph{Games user research. 1st ed. New York, NY: Oxford University Press}, vol. ED-1, pp. 333-353, Dec. 2018.
+
+\bibitem{drachen}
+Drachen, A. (2018). \emph{What Is Game Telemetry? - GameAnalytics.} [online] GameAnalytics. Available at: https://gameanalytics.com/blog/what-is-game-telemetry.html [Accessed 7 Dec. 2018].
+
+\bibitem{gibbs}
+Justin Gibbs. 2018. \emph{Prometheus}: Games User Research Tool Development Using Best Practices. In \emph{Proceedings of Guildhall Thesis Defense 2018 (Guildhall’18)}. ACM, New York, NY, USA, Article X, 10 pages. https://doi.org/10.475/123\_4
+
+\bibitem{gur-ch12}
+T. Knoll, "The think-aloud protocol," \emph{Games user research. 1st ed. New York, NY: Oxford University Press}, vol. ED-1, pp. 189-202, Dec. 2018.
+
+\bibitem{kumatani}
+S. Kumatani, T. Itoh, Y. Motohashi, K. Umezu and M. Takatsuka, "Time-Varying Data Visualization Using Clustered Heatmap and Dual Scatterplots," \emph{2016 20th International Conference Information Visualisation (IV)}, Lisbon, Portugal, 2016, pp. 63-68. doi:10.1109/IV.2016.50 keywords:{Data visualization;Space heating;Image color analysis;Clustering algorithms;Correlation;Process control},
+url:doi.ieeecomputersociety.org/10.1109/IV.2016.50
+
+\bibitem{gur-ch6}
+S. Long, "Designing a Games User Research lab from scratch," \emph{Games user research. 1st ed. New York, NY: Oxford University Press}, vol. ED-1, pp. 81-96, Dec. 2018.
+
+\bibitem{nacke}
+Lennart Nacke and Craig A. Lindley. 2008. Flow and immersion in first-person shooters: measuring the player's gameplay experience. In Proceedings of the 2008 Conference on Future Play: Research, Play, Share (Future Play '08). ACM, New York, NY, USA, 81-88. DOI=http://dx.doi.org/10.1145/1496984.1496998
+
+\bibitem{gur-ch16}
+L. E. Nacke, "Introduction to Biometric Measures for Games User Research," \emph{Games user research. 1st ed. New York, NY: Oxford University Press}, vol. ED-1, pp. 281-299, Dec. 2018.
 
 \bibitem{nielsen}
 Jakob Nielsen and Rolf Molich. 1990. Heuristic evaluation of user interfaces. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI '90), Jane Carrasco Chew and John Whiteside (Eds.). ACM, New York, NY, USA, 249-256. DOI=http://dx.doi.org/10.1145/97243.97281
 
-\bibitem{nacke}
-Lennart Nacke and Craig A. Lindley. 2008. Flow and immersion in first-person shooters: measuring the player's gameplay experience. In Proceedings of the 2008 Conference on Future Play: Research, Play, Share (Future Play '08). ACM, New York, NY, USA, 81-88. DOI=http://dx.doi.org/10.1145/1496984.1496998
+\bibitem{gur-ch11}
+M. Sangin, "Observing the player experience," \emph{Games user research. 1st ed. New York, NY: Oxford University Press}, vol. ED-1, pp. 175-188, Dec. 2018.
 
 \bibitem{simpleusability}
 Usability Testing and Market Research by SimpleUsability Behavioural Research Consultancy. (2018). \emph{What we do - Usability Testing and Market Research by SimpleUsability Behavioural Research Consultancy.} [online] Available at: http://www.simpleusability.com/our-services/games-testing/ [Accessed 7 Dec. 2018].
@@ -626,35 +639,14 @@ Usability Testing and Market Research by SimpleUsability Behavioural Research Co
 \bibitem{unite2015}
 YouTube. (2018). \emph{Unite 2015 - Custom Events Best Practices and Introduction to Heatmaps.} [online] Available at: https://youtu.be/aWZiB7jX7C0?t=28m [Accessed 7 Dec. 2018].
 
-\bibitem{drachen}
-Drachen, A. (2018). \emph{What Is Game Telemetry? - GameAnalytics.} [online] GameAnalytics. Available at: https://gameanalytics.com/blog/what-is-game-telemetry.html [Accessed 7 Dec. 2018].
+\bibitem{wehbe}
+Rina R. Wehbe, Elisa D. Mekler, Mike Schaekermann, Edward Lank, and Lennart E. Nacke. 2017. Testing Incremental Difficulty Design in Platformer Games. In \emph{Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems (CHI '17)}. ACM, New York, NY, USA, 5109-5113. DOI: https://doi.org/10.1145/3025453.3025697
 
-\bibitem{wolfshead}
-Wolfsheadonline.com. (2018). \emph{Bushnell's Theorem: Easy to Learn, Difficult to Master | Wolfshead Online.} [online] Available at: http://www.wolfsheadonline.com/bushnells-theorem-easy-to-learn-difficult-to-master/ [Accessed 7 Dec. 2018].
+\bibitem{gur-ch2}
+V. Zammitto, "Games User Research as part of the development process in the game industry," \emph{Games user research. 1st ed. New York, NY: Oxford University Press}, vol. ED-1, pp. 15-30, Dec. 2018.
 
-\bibitem{mirza}
-Drachen, A., Mirza-Babaei, P. and Nacke, L. (2018). Games user research. 1st ed. New York, NY: Oxford University Press.
-
-\bibitem{mirza-ch2}
-Drachen, A., Mirza-Babaei, P. and Nacke, L. (2018). Games user research. 1st ed. New York, NY: Oxford University Press, pp.Chapter 2, 15-30.
-
-\bibitem{mirza-ch6}
-Drachen, A., Mirza-Babaei, P. and Nacke, L. (2018). Games user research. 1st ed. New York, NY: Oxford University Press, pp.Chapter 6, 85.
-
-\bibitem{mirza-ch9}
-Drachen, A., Mirza-Babaei, P. and Nacke, L. (2018). Games user research. 1st ed. New York, NY: Oxford University Press, pp.Chapter 9, 141-162.
-
-\bibitem{mirza-ch11}
-Drachen, A., Mirza-Babaei, P. and Nacke, L. (2018). Games user research. 1st ed. New York, NY: Oxford University Press, pp.Chapter 11, 175-188.
-
-\bibitem{mirza-ch12}
-Drachen, A., Mirza-Babaei, P. and Nacke, L. (2018). Games user research. 1st ed. New York, NY: Oxford University Press, pp.Chapter 11, 189-202.
-
-\bibitem{mirza-ch16}
-Drachen, A., Mirza-Babaei, P. and Nacke, L. (2018). Games user research. 1st ed. New York, NY: Oxford University Press, pp.Chapter 16, 281-299.
-
-\bibitem{mirza-ch19}
-Drachen, A., Mirza-Babaei, P. and Nacke, L. (2018). Games user research. 1st ed. New York, NY: Oxford University Press, pp.Chapter 19, 333-353.
+%\bibitem{wolfshead}
+%Wolfsheadonline.com. (2018). \emph{Bushnell's Theorem: Easy to Learn, Difficult to Master | Wolfshead Online.} [online] Available at: http://www.wolfsheadonline.com/bushnells-theorem-easy-to-learn-difficult-to-master/ [Accessed 7 Dec. 2018].
 
 \end{thebibliography}
 
