@@ -19,7 +19,6 @@
 % Some very useful LaTeX packages include:
 % (uncomment the ones you want to load)
 
-
 % *** MISC UTILITY PACKAGES ***
 %
 %\usepackage{ifpdf}
@@ -61,12 +60,12 @@
 % *** GRAPHICS RELATED PACKAGES ***
 %
 \ifCLASSINFOpdf
-  % \usepackage[pdftex]{graphicx}
+  \usepackage[pdftex]{graphicx}
   % declare the path(s) where your graphic files are
-  % \graphicspath{{../pdf/}{../jpeg/}}
+  \graphicspath{{../pdf/}{../jpeg/}}
   % and their extensions so you won't have to specify these with
   % every instance of \includegraphics
-  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+  \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 \else
   % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
   % will default to the driver specified in the system graphics.cfg if no
@@ -261,7 +260,7 @@
 
 % *** PDF, URL AND HYPERLINK PACKAGES ***
 %
-%\usepackage{url}
+\usepackage{url}
 % url.sty was written by Donald Arseneau. It provides better support for
 % handling and breaking URLs. url.sty is already installed on most LaTeX
 % systems. The latest version and documentation can be obtained at:
@@ -376,7 +375,13 @@ GUR, games user research, unreal engine, tool development.
 % creates the second title. It will be ignored for other modes.
 %\IEEEpeerreviewmaketitle
 
+\newcounter{figures}
 
+\begin{figure}[ht]
+\includegraphics[width=8cm]{"testing_live"}
+\caption{An early screenshot of YOGURT as it was being tested in a live rendering environment.}
+\label{testingLive}
+\end{figure}
 
 \section{Introduction}
 % The very first letter is a 2 line initial drop letter followed
@@ -400,6 +405,24 @@ GUR, games user research, unreal engine, tool development.
  
 \hfill December 06, 2018
 
+\begin{figure}[b]
+\includegraphics[width=8cm]{"scene_yogurt_postrun_focused"}
+\caption{A sampling of the kind of visual that YOGURT produces when visualizing a 2D heat-map.}
+\label{exampleOverivew}
+\end{figure}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{"scene_minimal"}
+\caption{The default scene created by UE4, without YOGURT.}
+\label{sceneMinimal}
+\end{figure*}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{"scene_yogurt"}
+\caption{The default scene, but with the minimally required 2 YOGURT actors, the data manager and a single quad.}
+\label{sceneYogurt}
+\end{figure*}
+
 \section{Related Works}
 
 The field of Games User Research (otherwise known as GUR) isn’t exactly a new field in game development. In fact, its been around a while. GUR is the practice of analyzing user experience (UX) for the purpose of improving that same experience. That said, it has only been formally recognized as a discipline within the games industry in the last decade \cite{gur-ch2}. For some studios, user experience research may tend to fall under the umbrella category of quality assurance (QA) testing, as it’s more convenient to test the game for bugs and experience all at once. There is a clear distinction in intent when it comes to QA vs GUR testing. Per definition, Quality Assurance testing is meant to test the quality of a game - to find bugs so that these bugs can be fixed so that the game is more stable. The purpose of Games User Research testing, however, is to collecting, analyzing, and act upon on data pertaining to the user’s experience of a game for the purpose of improving said experience. In short, QA is the practice of making a game bug free, whereas GUR must assume a game is stable and looks at how to give players the most enjoyable experience.
@@ -415,6 +438,72 @@ Individual companies and engine developers alike have already started integratin
 % and how it is used
 % think of this as documentation for the plugin but with
 % more in terms of what is going on behind the scenes
+
+\subsection{Overview}
+
+Your Own Games User Research Toolset (YOGURT for short), is an Unreal Engine 4 plugin which helps game developers analyze player experience using telemetry from their game. It can be used with single or multi-player frameworks, but works best when there is a 2D or 3D space for the player to exist in.
+
+As a vision, YOGURT has support or will have support for any number of different modules to gather analytical data representing user experience. This ranges from 2D or 3D heat-maps, event markers, storyboards, or any other kind of visualization that a developer would find useful. As a prototype, however, the current state of YOGURT, provides native support for 2 dimensional heat-maps in 3-dimensional space. It also currently provides native support for binning collected data by timestamp so it can be viewed in chunks instead of all together. In Figure \ref{exampleOverivew}, you can see an example of player experience represented as the area in which the player traveled through their play session.
+
+\begin{figure}[h]
+\includegraphics[width=8.5cm]{"scene_quad_details"}
+\caption{The details panel for the Heatmap2D-Quad actor.}
+\label{sceneQuadDetails}
+\end{figure}
+
+\subsection{Technical Overview}
+
+YOGURT is divided into two separate modules in the plugin. The first is the runtime environment (YogurtRuntime). This module gets packaged with the game and can be used like any average set of scripts in Unreal. the runtime module contains structures for data points (events or data being tracked in a game) and actors which contain implementations which save this data to disk for later usage.
+
+The second is the editor environment (YogurtEditor). The editor module provides the support for loading data and visualizing it in the editor. Also, the editor module is \emph{not} included when the game gets packaged. This is meant to prevent unnecessary assets from being added to the build, when players would never ever need to see or touch them. It makes builds lighter, and prevents users from experiencing any potential bugs that could crop up in the editor module. The editor module contains implementations for loading data from files, as well as multithreading implementations for loading data. Data collected from games can range from a couple data points (for isolated events like deaths or comments) to thousands or millions of points (for continuous events like tracking player location or speed). It was important when implementing the system that developers weren't blocked from doing work while the data was being loaded and processed.
+
+\begin{figure}[ht]
+\includegraphics[width=8.5cm]{"scene_manager_details"}
+\caption{The details panel for the Heatmap2D-DataManager actor.}
+\label{sceneManagerDetails}
+\end{figure}
+
+\subsection{Implementation: First Steps}
+
+This section will assume you have basic knowledge pertaining to how to add a plugin to a project. YOGURT is open source, and as such the latest source code can be found on the github repository (\url{https://github.com/temportalflux/YOGURT}). It also assumes the implementer knows how to find the content of the plugin in the content window (any actors or textures referenced come from this directory, under /Heatmap/2D/ if not explicitly stated).
+
+Figure \ref{sceneMinimal} shows the most basic and minimal Unreal Engine level/scene/map (the terminology of scene will be used to describe these assets from this point forward). After YOGURT has been successfully installed and compiled, you can create a new scene (or use an old one) and just add YOGURT to it. Figure \ref{sceneYogurt} shows the same scene, this time with the Heatmap2D-DataManager and Heatmap2D-Quad actors added to it. These actors can be anywhere in the hierarchy, but they have been put in a folder labeled YOGURT for organizational and referencing purposes.
+
+In this implementation, only 3 variables have been tweaked from the default blueprints. In Figure \ref{sceneQuadDetails}, the scale of the Quad actor has been set to 50x50x1, and the Size Ratio field has been set to 1x1. This means that in world space, the heat-map takes up 500x500 units on the XY-plane (the actor at unit scale is 100x100 units). The Size Ratio field tells the inner system that the ratio of width to height of the quad is 1:1. If this was a rectangle, the Size Ratio could be 2:1, 1:2, 50:3, or whatever the scale requires to have an accurately scaled rect (not stretched). The last field is labeled "Unit to Uv Scale" in the DataManager actor (Figure \ref{sceneManagerDetails}). This field indicates how scaled up the texture UV coordinate should be for the meshes. Because there is only one quad actor in the hierarchy, and the default texture on which the player position is rendered is 1024x1024 pixels, this parameter has been set to 1024. For our quad, whose Size Ratio is 1:1, the pixel size of the quad will be 1024x1024, thereby taking up the whole texture. As seen in Figure \ref{generatedUVs}, the quad takes up the entire texture space (this actor can be found in the YOGURT content directory, labeled Heatmap2D-GeneratedUVs).
+
+\begin{figure}[ht]
+\includegraphics[width=8.5cm]{"generatedUVs"}
+\caption{The Heatmap2D-GeneratedUVs RenderTarget. Take note that the texture is 1024x1024 pixels, and a solid color fills it up. This means that the quad in Figure \ref{sceneYogurt} references the entire texture.}
+\label{generatedUVs}
+\end{figure}
+
+\begin{figure}[ht]
+\includegraphics[width=8.5cm]{"scene_manager_details_expanded"}
+\caption{More details of the DataManager referenced in Figure \ref{sceneManagerDetails}, this time taken after data has been saved and the filename inputted.}
+\label{sceneManagerDetailsExpanded}
+\end{figure}
+
+\begin{figure}[ht]
+\includegraphics[width=8.5cm]{"scene_manager_details_loading"}
+\caption{The section in the details panel DataManager (referenced in Figure \ref{sceneManagerDetails}) for clearing, loading, and selecting data timeframes.}
+\label{sceneManagerDetailsLoading}
+\end{figure}
+
+With this implementation, the player can run around in the environment, and the default implementation gathers analytical data on the first player, tracking their position every tick. This data can then be loaded into the editor. After running the game, either in standalone, packaged, or in editor, there will be log messages from LogYogurtRuntime stating where the data was written to. In this example, data was written to the default path and timestamp of "C:/Program Files/Epic Games/UE\_4.20/Yogurt/2018.12.08-13.34.39\_Heatmap.dat". The filename was plugged into the "File Paths" array field, as seen in Figure \ref{sceneManagerDetailsExpanded}. After inputting this filename, there is a button exposed labelled "Load Data" in the DataManager (Figure \ref{sceneManagerDetailsLoading}). Pressing that button yields the image shown in Figures \ref{exampleOverivew} and \ref{exampleOverivewLarge}.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{"scene_yogurt_postrun"}
+\caption{Another version of Figure \ref{exampleOverivew}, this time with the full inspector view}
+\label{exampleOverivewLarge}
+\end{figure*}
+
+\subsection{Implementation: Deep Dive}
+
+\subsection{Custom Telemetry Modules}
+
+\subsection{Usage: Single vs Multiplayer}
+
+----
 
 The purpose of this study was to explore the GUR discipline, looking at problems and challenges as a programmer. As such, after gathering a fundamental understanding of the field, the next goal was to craft a proposal for a tool which would enter development. This tool eventually became known as Your Own Games User Research Toolset (YOGURT). YOGURT is a Unreal Engine 4 plugin which provides a framework for recording data during gameplay and loading it into the editor at a later point.
 At its inception, YOGURT was planned to have native support for heat-maps, as they are a frequently used tool for tracking anything from player movement to death rates to actions in the world to player emotional input (lookup Hopson Boxes). YOGURT was also planned to provide native support for a set of features called Timelines. This feature set would allow developers to bin/chunk data according to when they occurred during gameplay so that developers could view specific chunks of gameplay. It would also allow developers to “playback” data from a starting time to an ending time, seeing what players are doing in the environment over the course of gameplay.
